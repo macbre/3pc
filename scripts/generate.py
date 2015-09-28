@@ -7,16 +7,20 @@ from collections import OrderedDict
 from urllib2 import urlopen
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s %(name)-20s %(levelname)-8s %(message)s'
 )
 
 
 # 3pc source generic class
 class ThirdPCSource(object):
+    FILENAME = None
+
     def __init__(self):
         self._logger = logging.getLogger(self.__class__.__name__)
         self._logger.info('Started')
+
+        self._data = {}
 
     def _fetch_url(self, url):
         self._logger.info('Fetching <{}>'.format(url))
@@ -37,9 +41,9 @@ class ThirdPCSource(object):
             return package['version']
 
     def _store(self, name, data):
-        self._logger.info('Saving data to {}.json'.format(name))
+        self._logger.info('Saving data to {}'.format(name))
 
-        filename = '../db/{}.json'.format(name)
+        filename = '../db/{}'.format(name)
         with open(filename, 'wt') as fp:
             data.update({
                 '_generator': '3pc v{}'.format(self.version)
@@ -48,18 +52,26 @@ class ThirdPCSource(object):
             json.dump(data, fp, indent=2, sort_keys=True, separators=(',', ': '))
 
     def generate(self):
-        raise Exception("generate function must be implemented")
+        """
+        Run the _generate function that is implemented on per-source basis
+
+        Data stored in self._data will be then saved in self.FILENAME
+        """
+        self._generate()
+        self._store(self.FILENAME, self._data)
+
+    def _generate(self):
+        raise Exception("_generate function must be implemented")
 
 
 # Generate cdn.json using WebPageTest data (issue #6)
 class WebPageTestSource(ThirdPCSource):
     SOURCE = 'https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h'
+    FILENAME = 'cdn.json'
 
-    def generate(self):
+    def _generate(self):
         content = self._fetch_url(self.SOURCE)
         matches = re.findall(r'(\w+)\[\] = \{([^;]+)\};', content, flags=re.MULTILINE)
-
-        cdn = {}
 
         for section, lines in matches:
             # parse lines
@@ -74,19 +86,17 @@ class WebPageTestSource(ThirdPCSource):
 
             if section == 'cdnList':
                 # {".nocookie.net", "Fastly"}
-                cdn['by_domain'] = OrderedDict()
+                self._data['by_domain'] = OrderedDict()
 
                 for domain, name in lines:
-                    cdn['by_domain'][domain] = name
+                    self._data['by_domain'][domain] = name
 
             elif section == 'cdnHeaderList':
                 # {"Via", "CloudFront", "Amazon CloudFront"}
-                cdn['by_header'] = OrderedDict()
+                self._data['by_header'] = OrderedDict()
 
                 for header, value, name in lines:
-                    cdn['by_header']['{}: {}'.format(header, value)] = name
-
-        self._store('cdn', cdn)
+                    self._data['by_header']['{}: {}'.format(header, value)] = name
 
 
 def main():
