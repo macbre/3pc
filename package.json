@@ -1,0 +1,24 @@
+{
+  "name": "3pc",
+  "version": "0.1.0",
+  "description": "Third party web content database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macbre/3pc.git"
+  },
+  "keywords": [
+    "webperf",
+    "3pc",
+    "cdn"
+  ],
+  "author": "Maciej Brencz <maciej.brencz@gmail.com> (https://github.com/macbre)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/macbre/3pc/issues"
+  },
+  "homepage": "https://github.com/macbre/3pc#readme"
+}
