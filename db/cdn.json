@@ -1,5 +1,6 @@
 {
   "_generator": "3pc v0.1.0",
+  "_source": "https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h",
   "by_domain": {
     ".afxcdn.net": "afxcdn.net",
     ".akamai.net": "Akamai",
