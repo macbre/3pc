@@ -14,12 +14,11 @@ logging.basicConfig(
 
 # 3pc source generic class
 class ThirdPCSource(object):
+    SOURCE = None
     FILENAME = None
 
     def __init__(self):
         self._logger = logging.getLogger(self.__class__.__name__)
-        self._logger.info('Started')
-
         self._data = {}
 
     def _fetch_url(self, url):
@@ -46,7 +45,8 @@ class ThirdPCSource(object):
         filename = '../db/{}'.format(name)
         with open(filename, 'wt') as fp:
             data.update({
-                '_generator': '3pc v{}'.format(self.version)
+                '_generator': '3pc v{}'.format(self.version),
+                '_source': self.SOURCE
             })
 
             json.dump(data, fp, indent=2, sort_keys=True, separators=(',', ': '))
@@ -97,6 +97,35 @@ class WebPageTestSource(ThirdPCSource):
 
                 for header, value, name in lines:
                     self._data['by_header']['{}: {}'.format(header, value)] = name
+
+
+# Generate trackers.json using Ghostery data (issue #1)
+class GhosterySource(ThirdPCSource):
+    SOURCE = 'https://raw.githubusercontent.com/jonpierce/ghostery/master/' + \
+             'firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js'
+    FILENAME = 'trackers.json'
+
+    def _generate(self):
+        content = self._fetch_url(self.SOURCE).strip(';')
+        rules = json.loads(content)
+
+        self._data['by_regexp'] = {}
+        self._data['by_url'] = {}
+
+        self._logger.info('Parsing {} rules'.format(len(rules)))
+
+        for entry in rules:
+            pattern = entry['pattern']
+
+            if re.search(r'[\(\|\*\?]', pattern):
+                # regexp rule: "/google-analytics\\.com\\/(urchin\\.js|ga\\.js)/i"
+                self._data['by_regexp'][pattern] = entry['name']
+            else:
+                # strpos rule: "/\\/piwik\\.js/i"
+                pattern = re.sub(r'^/|/i$', '', pattern)
+                pattern = re.sub(r'\\', '', pattern)
+
+                self._data['by_url'][pattern] = entry['name']
 
 
 def main():
