@@ -35,14 +35,14 @@ class ThirdPCSource(object):
         """
         Get version entry from package.json
         """
-        with open('../package.json') as fp:
+        with open('package.json') as fp:
             package = json.load(fp)
             return package['version']
 
     def _store(self, name, data):
         self._logger.info('Saving data to {}'.format(name))
 
-        filename = '../db/{}'.format(name)
+        filename = 'db/{}'.format(name)
         with open(filename, 'wt') as fp:
             data.update({
                 '_generator': '3pc v{}'.format(self.version),
@@ -119,6 +119,8 @@ class GhosterySource(ThirdPCSource):
 
             if re.search(r'[\(\|\*\?]', pattern):
                 # regexp rule: "/google-analytics\\.com\\/(urchin\\.js|ga\\.js)/i"
+                pattern = re.sub(r'^/|/i$', '', pattern)  # remove wrapping /
+
                 self._data['by_regexp'][pattern] = entry['name']
             else:
                 # strpos rule: "/\\/piwik\\.js/i"

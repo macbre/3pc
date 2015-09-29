@@ -1,10 +1,10 @@
 {
   "name": "3pc",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Third party web content database",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/macbre/3pc/issues"
   },
-  "homepage": "https://github.com/macbre/3pc#readme"
+  "homepage": "https://github.com/macbre/3pc#readme",
+  "devDependencies": {
+    "leche": "^2.1.1",
+    "mocha": "^2.3.3"
+  }
 }
