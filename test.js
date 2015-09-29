@@ -46,3 +46,34 @@ describe('3pc CDN', function() {
 	});
 });
 
+describe('3pc trackers', function() {
+	it('should detect tracking services properly', function() {
+		leche.withData([
+			[
+				'http://example.com/Foo',
+				false
+			],
+			[
+				'http://example.com/foo.google.js',
+				false
+			],
+			// Quantcast
+			[
+				'http://edge.quantserve.com/quant.js',
+				'Quantcast'
+			],
+			[
+				'https://secure.quantserve.com/quant.js',
+				'Quantcast'
+			],
+			// Skribit
+			[
+				'http://assets.skribit.com/javascripts/SkribitSuggest.js',
+				'Skribit'
+			]
+		], function(url, expected) {
+			assert.equal(thirdParty.trackers.matchByUrl(url), expected, url + ' tracker should be provided by ' + expected);
+		});
+	});
+});
+
