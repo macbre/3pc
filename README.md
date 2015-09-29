@@ -28,6 +28,10 @@ false
 
 console.log(thirdParty.cdn.matchByUrl('http://vignette3.wikia.nocookie.net/nordycka/images/e/ee/Tj%C3%B8rnuv%C3%ADk.jpg/revision/latest/scale-to-width-down/640?cb=20150904165805&path-prefix=pl'));
 Fastly
+
+// check if given URL is not a tracking code
+console.log(thirdParty.trackers.matchByUrl('http://edge.quantserve.com/quant.js'));
+Quantcast
 ```
 
 ## Data sources
