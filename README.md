@@ -40,8 +40,7 @@ Fastly
 These sources are parsed and the result is stored in `./db` directory by running a Python script:
 
 ```
-scripts$ ./generate.py
+make generate
 ```
 
 So this database can be used by any technology that can read and parse JSON-encoded files.
-
