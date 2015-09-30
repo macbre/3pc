@@ -27,21 +27,21 @@ console.log(thirdParty.cdn.matchByUrl('http://example.com/foo.js'));
 false
 
 console.log(thirdParty.cdn.matchByUrl('http://vignette3.wikia.nocookie.net/nordycka/images/e/ee/Tj%C3%B8rnuv%C3%ADk.jpg/revision/latest/scale-to-width-down/640?cb=20150904165805&path-prefix=pl'));
-Fastly
+"Fastly"
 
 // check if given URL is not a tracking code
 console.log(thirdParty.trackers.matchByUrl('http://edge.quantserve.com/quant.js'));
-Quantcast
+"Quantcast"
 ```
 
 ## Data sources
 
 `3pc` is currently using the following data sources:
 
-* [CDN providers from webpagetest](https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h)
-* [Tracking tools from Ghostery](https://raw.githubusercontent.com/jonpierce/ghostery/master/firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js)
+* [CDN providers from webpagetest](https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h) (125 entries)
+* [Tracking tools from Ghostery](https://raw.githubusercontent.com/jonpierce/ghostery/master/firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js) (219 entries)
 
-These sources are parsed and the result is stored in `./db` directory by running a Python script:
+These sources are parsed and the result is stored in `./db` directory as JSON files by running a Python script:
 
 ```
 make generate

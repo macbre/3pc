@@ -19,7 +19,9 @@ class ThirdPCSource(object):
 
     def __init__(self):
         self._logger = logging.getLogger(self.__class__.__name__)
+
         self._data = {}
+        self._count = 0
 
     def _fetch_url(self, url):
         self._logger.info('Fetching <{}>'.format(url))
@@ -46,6 +48,7 @@ class ThirdPCSource(object):
         with open(filename, 'wt') as fp:
             data.update({
                 '_generator': '3pc v{}'.format(self.version),
+                '_count': self._count,
                 '_source': self.SOURCE
             })
 
@@ -89,7 +92,10 @@ class WebPageTestSource(ThirdPCSource):
                 self._data['by_domain'] = OrderedDict()
 
                 for domain, name in lines:
-                    self._data['by_domain'][domain] = name
+                    # filter out "END_MARKER"
+                    if '.' in domain:
+                        self._data['by_domain'][domain] = name
+                        self._count += 1
 
             elif section == 'cdnHeaderList':
                 # {"Via", "CloudFront", "Amazon CloudFront"}
@@ -97,6 +103,7 @@ class WebPageTestSource(ThirdPCSource):
 
                 for header, value, name in lines:
                     self._data['by_header']['{}: {}'.format(header, value)] = name
+                    self._count += 1
 
 
 # Generate trackers.json using Ghostery data (issue #1)
@@ -122,12 +129,14 @@ class GhosterySource(ThirdPCSource):
                 pattern = re.sub(r'^/|/i$', '', pattern)  # remove wrapping /
 
                 self._data['by_regexp'][pattern] = entry['name']
+                self._count += 1
             else:
                 # strpos rule: "/\\/piwik\\.js/i"
                 pattern = re.sub(r'^/|/i$', '', pattern)
                 pattern = re.sub(r'\\', '', pattern)
 
                 self._data['by_url'][pattern] = entry['name']
+                self._count += 1
 
 
 def main():

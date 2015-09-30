@@ -1,5 +1,6 @@
 {
-  "_generator": "3pc v0.0.0",
+  "_count": 125,
+  "_generator": "3pc v0.1.0",
   "_source": "https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h",
   "by_domain": {
     ".afxcdn.net": "afxcdn.net",
@@ -91,7 +92,6 @@
     ".yimg.": "Yahoo",
     ".yottaa.net": "Yottaa",
     ".zenedge.net": "Zenedge",
-    "END_MARKER": "END_MARKER",
     "bo.lt": "BO.LT",
     "cdn.jsdelivr.net": "jsDelivr",
     "cdn.sfr.net": "SFR",

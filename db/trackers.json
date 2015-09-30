@@ -1,5 +1,6 @@
 {
-  "_generator": "3pc v0.0.0",
+  "_count": 219,
+  "_generator": "3pc v0.1.0",
   "_source": "https://raw.githubusercontent.com/jonpierce/ghostery/master/firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js",
   "by_regexp": {
     "(Tacoda_AMS_DDC_Header\\.js|an\\.tacoda\\.net\\/|an\\.secure\\.tacoda\\.net\\/)": "Tacoda",
