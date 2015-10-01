@@ -5,7 +5,7 @@ Third party web content database
 
 ## What is it?
 
-`3pc` is meant to be a data-provider of CDN and 3rd party tracking services list.
+`3pc` is meant to be a data-provider of Content Delivery Network, tracking services, social media widgets and 3rd party JS libraries URLs list.
 
 Inspired by [this PerfPlanet article](http://calendar.perfplanet.com/2013/thirdpartycontent/).
 
@@ -39,7 +39,7 @@ console.log(thirdParty.trackers.matchByUrl('http://edge.quantserve.com/quant.js'
 `3pc` is currently using the following data sources:
 
 * [CDN providers from webpagetest](https://raw.githubusercontent.com/WPO-Foundation/webpagetest/master/agent/wpthook/cdn.h) (125 entries)
-* [Tracking tools from Ghostery](https://raw.githubusercontent.com/jonpierce/ghostery/master/firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js) (219 entries)
+* [Tracking services from Ghostery](https://raw.githubusercontent.com/jonpierce/ghostery/master/firefox/ghostery-statusbar/ghostery/chrome/content/ghostery-bugs.js) (219 entries)
 
 These sources are parsed and the result is stored in `./db` directory as JSON files by running a Python script:
 
